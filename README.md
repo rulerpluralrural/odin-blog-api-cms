@@ -1,3 +1,6 @@
+Creating a front end for authoring, editing and deleting post for my blog API project on TheOdin Project
+
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
