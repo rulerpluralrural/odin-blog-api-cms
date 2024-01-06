@@ -1,9 +1,15 @@
 import { React, useEffect, useState } from "react";
 import PuffLoader from "react-spinners/PuffLoader";
+import PostList from "../components/HomePage/PostList";
+import CreateButton from "../components/HomePage/CreateButton";
+import SearchBox from "../components/HomePage/SearchBox";
+import Select from "../components/HomePage/Select";
 
 export default function Home({ user }) {
 	const [posts, setPosts] = useState(null);
 	const [loading, setLoading] = useState(false);
+	const [sortType, setSortType] = useState("default");
+	const [searchInput, setSearchInput] = useState("");
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -23,8 +29,6 @@ export default function Home({ user }) {
 		fetchData();
 	}, []);
 
-	console.log(posts);
-
 	if (loading || posts === null) {
 		return (
 			<div className="flex h-full flex-col justify-center items-center">
@@ -37,32 +41,19 @@ export default function Home({ user }) {
 	}
 
 	return (
-		<div className="flex flex-col h-full">
-			{posts.map((post, index) => {
-				return (
-					<div key={index}>
-						<div>
-							<h1>{post.title}</h1>
-							<img src={post.imgURL} alt={`${post.title} image`} />
-						</div>
-						<div>
-							<p>{post.content}</p>
-						</div>
-						<div>
-							<div>
-								<p>Created By:</p>
-								<p>{post.author.username}</p>
-							</div>
-							<div>
-								<p>Posted on:</p>
-								<p>{post.date_formatted}</p>
-							</div>
-						</div>
-                        <button>Delete</button>
-                        <button>Edit</button>
-					</div>
-				);
-			})}
+		<div className="flex flex-col h-full px-72 gap-3">
+			<div className="flex items-center justify-between gap-2 pt-10">
+				<SearchBox />
+				<Select setSortType={setSortType} />
+			</div>
+			<div>
+				<CreateButton />
+			</div>
+			<div className="flex flex-col items-center justify-center flex-1 gap-2 pb-10">
+				{posts.map((post, index) => {
+					return <PostList post={post} key={index} />;
+				})}
+			</div>
 		</div>
 	);
 }
