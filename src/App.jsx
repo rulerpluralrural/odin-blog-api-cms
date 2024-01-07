@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import { PuffLoader } from "react-spinners";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CreatePost from "./pages/CreatePost";
 
 const App = () => {
 	const [user, setUser] = useState(null);
@@ -41,6 +42,8 @@ const App = () => {
 				<Routes>
 					<Route path="/" element={<Home user={user} />}></Route>
 					<Route path="/login" element={<Login setUser={setUser} />}></Route>
+					<Route path="/create" element={<CreatePost />}></Route>
+					<Route />
 				</Routes>
 			)}
 			<ToastContainer
