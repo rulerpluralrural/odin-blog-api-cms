@@ -1,5 +1,8 @@
 Creating a front end for authoring, editing and deleting post for my blog API project on TheOdin Project
 
+Credits to storyset on Freepik for the unauthorized image
+Profile link = "https://www.freepik.com/free-vector/401-error-unauthorized-concept-illustration_8030428.htm#query=unauthorized&position=1&from_view=keyword&track=sph&uuid=081ceb07-0d2f-4cbc-a805-715ccc2b3ac0"
+
 
 # React + Vite
 

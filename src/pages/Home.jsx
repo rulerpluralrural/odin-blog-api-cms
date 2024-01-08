@@ -4,6 +4,7 @@ import PostList from "../components/HomePage/PostList";
 import CreateButton from "../components/HomePage/CreateButton";
 import SearchBox from "../components/HomePage/SearchBox";
 import Select from "../components/HomePage/Select";
+import Unauthorized from "./Unauthorized"
 
 export default function Home({ user }) {
 	const [posts, setPosts] = useState(null);
@@ -39,7 +40,13 @@ export default function Home({ user }) {
 			</div>
 		);
 	}
-	
+
+	if (!user.isAdmin) {
+		return (
+			<Unauthorized />
+		);
+	}
+
 	return (
 		<div className="flex flex-col h-full px-72 gap-3">
 			<div className="flex items-center justify-between gap-2 pt-10">

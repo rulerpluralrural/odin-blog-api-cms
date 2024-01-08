@@ -4,11 +4,12 @@ import FormHeader from "../components/CreatePostPage/FormHeader";
 import ImageInput from "../components/CreatePostPage/ImageInput";
 import PublishedOptions from "../components/CreatePostPage/PublishedOptions";
 import TitleInput from "../components/CreatePostPage/TitleInput";
+import Unauthorized from "./Unauthorized";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { PuffLoader } from "react-spinners";
 
-const CreatePost = () => {
+const CreatePost = ({ user }) => {
 	const navigate = useNavigate();
 	const [formData, setFormData] = useState({
 		title: "",
@@ -77,9 +78,13 @@ const CreatePost = () => {
 	if (loading) {
 		return (
 			<div className="flex flex-col items-center justify-center">
-				<PuffLoader size={150} color="#36d6b0" />
+				<PuffLoader size={125} color="#36d6b0" />
 			</div>
 		);
+	}
+
+	if (user && !user.isAdmin) {
+		return <Unauthorized />;
 	}
 
 	return (
