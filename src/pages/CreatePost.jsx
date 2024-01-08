@@ -1,74 +1,98 @@
 import React, { useState } from "react";
-import { FaBlog } from "react-icons/fa";
-
-const inputControl = "p-3 border-[1px] border-slate-400 rounded-sm";
-const labelControl = "py-2 font-serif font-bold text-xl";
-const formControl = "w-full flex flex-col";
+import ContentInput from "../components/CreatePostPage/ContentInput";
+import FormHeader from "../components/CreatePostPage/FormHeader";
+import ImageInput from "../components/CreatePostPage/ImageInput";
+import PublishedOptions from "../components/CreatePostPage/PublishedOptions";
+import TitleInput from "../components/CreatePostPage/TitleInput";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { PuffLoader } from "react-spinners";
 
 const CreatePost = () => {
+	const navigate = useNavigate();
 	const [formData, setFormData] = useState({
 		title: "",
 		content: "",
-		published: "",
+		published: false,
 		imageURL: "",
 	});
+	const [loading, setLoading] = useState(false);
 
-    const handleSubmitPost = (e) => {
-        e.preventDefault()
-    }
+	const handleChange = (e) => {
+		setFormData((prevState) => ({
+			...prevState,
+			[e.target.name]: e.target.value,
+		}));
+	};
+
+	const handlePublish = (e) => {
+		setFormData((prevState) => ({
+			...prevState,
+			[e.target.name]: e.target.value === "published",
+		}));
+	};
+
+	console.log(formData);
+
+	const handleSubmitPost = async (e) => {
+		e.preventDefault();
+		setLoading(true);
+
+		try {
+			const data = await fetch("http://localhost:8000/api/blog/posts", {
+				method: "POST",
+				credentials: "include",
+				body: JSON.stringify(formData),
+				headers: {
+					["Content-Type"]: "application/json; charset=utf-8",
+				},
+			}).then((res) => res.json());
+			setLoading(false);
+			console.log(data);
+
+			let notify;
+
+			if (data.post) {
+				navigate("/");
+				notify = toast.success("Post created successfully!");
+			} else {
+				if (data.messages) {
+					data.messages.forEach((message) => {
+						notify = toast.error(message.msg);
+					});
+				} else {
+					notify = toast.error(data.message);
+				}
+			}
+			// console.log(data);
+			setTimeout(() => {
+				toast.dismiss(notify);
+			}, 5000);
+		} catch (error) {
+			console.log(error);
+			setLoading(false);
+		}
+	};
+
+	if (loading) {
+		return (
+			<div className="flex flex-col items-center justify-center">
+				<PuffLoader size={150} color="#36d6b0" />
+			</div>
+		);
+	}
 
 	return (
 		<div className="py-10 flex flex-col items-center justify-center">
 			<FormHeader />
-			<form className="flex flex-col gap-2 items-center justify-center w-[30%]" onSubmit={handleSubmitPost}>
-				<div className={formControl}>
-					<label htmlFor="title" className={labelControl}>
-						Title:
-					</label>
-					<input
-						type="text"
-						id="title"
-						name="title"
-						className={inputControl}
-						placeholder="Enter the title of your post..."
-						required
-					/>
-				</div>
-				<div className={formControl}>
-					<label htmlFor="content" className={labelControl}>
-						Content:
-					</label>
-					<input
-						type="text"
-						name="content"
-						id="content"
-						className={inputControl}
-						placeholder="Enter the content of your post..."
-						required
-					/>
-				</div>
-				<div className={formControl}>
-					<select
-						name="publishPost"
-						id="publishPost"
-						defaultValue={"published"}
-						className={`${inputControl} mt-4 bg-slate-200`}
-					>
-						<option value="published">Published</option>
-						<option value="unpublished">Unpublished</option>
-					</select>
-				</div>
-				<div className={formControl}>
-					<label htmlFor="imageURL" className={labelControl}>
-						Image URL:
-					</label>
-					<input
-						type="text"
-						name="imageURL"
-						className={inputControl}
-						placeholder="Enter an image URL for your post..."
-					/>
-				</div>
+			<form
+				className="flex flex-col gap-2 items-center justify-center w-[30%]"
+				onSubmit={handleSubmitPost}
+			>
+				<TitleInput handleChange={handleChange} />
+				<ContentInput handleChange={handleChange} />
+				<PublishedOptions handlePublish={handlePublish} />
+				<ImageInput handleChange={handleChange} />
 				<button
 					type="submit"
 					className="p-3 rounded-sm bg-[#21c221] hover:bg-[#33a133] focus:bg-[#33a133] transition-colors text-white w-full mt-2 font-semibold text-xl tracking-wider"
@@ -76,15 +100,6 @@ const CreatePost = () => {
 					SUBMIT
 				</button>
 			</form>
-		</div>
-	);
-};
-
-const FormHeader = () => {
-	return (
-		<div className="flex items-center gap-2 font-serif text-5xl font-semibold mb-10">
-			<FaBlog className="mb-2" />
-			<h1>BLOG API</h1>
 		</div>
 	);
 };

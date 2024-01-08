@@ -39,7 +39,7 @@ export default function Home({ user }) {
 			</div>
 		);
 	}
-
+	
 	return (
 		<div className="flex flex-col h-full px-72 gap-3">
 			<div className="flex items-center justify-between gap-2 pt-10">
