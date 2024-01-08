@@ -12,9 +12,10 @@ const Select = ({ setSortType }) => {
 			>
 				<option value="a-z">A - Z</option>
 				<option value="z-a">Z - A</option>
-				<option value="rating">Rating</option>
+				<option value="newest">Newest</option>
+				<option value="oldest">Oldest</option>
 				<option value="popularity">Most Liked</option>
-        <option value="comments">Most Commented</option>
+				<option value="comments">Most Commented</option>
 			</select>
 		</div>
 	);

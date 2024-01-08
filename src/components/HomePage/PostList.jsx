@@ -43,22 +43,22 @@ const PostRight = ({ post }) => {
 					<strong>Content</strong>: {post.content}
 				</p>
 			</div>
-			<div className="flex items-center w-[300px] gap-5">
-				<p className="flex items-center gap-2">
+			<div className="flex items-center w-[300px] gap-5 my-3">
+				<p className="flex items-center gap-2 px-3 py-2 border-[1px] border-slate-300 rounded-sm">
 					<strong>Likes: </strong>
 					<FaRegThumbsUp /> {post.likes.length}
 				</p>
-				<p className="flex items-center gap-2">
+				<p className="flex items-center gap-2 px-3 py-2 border-[1px] border-slate-300 rounded-sm">
 					<strong>Comments: </strong>
 					<FaRegComment /> {post.comments.length}
 				</p>
 			</div>
-			<div className="flex gap-3 mt-2">
-				<button className=" bg-red-600 text-white px-3 py-2 w-[150px] font-semibold hover:bg-red-700 focus:bg-red-700 transition-colors">
-					Delete
-				</button>
-				<button className=" bg-blue-500 px-3 py-2 w-[150px] text-white font-semibold hover:bg-blue-600 focus:bg-blue-600 transition-colors">
+			<div className="flex flex-col gap-2 w-full text-lg">
+				<button className=" bg-blue-500 p-3 text-white font-semibold hover:bg-blue-600 focus:bg-blue-600 transition-colors w-full">
 					Edit
+				</button>
+				<button className=" bg-red-600 text-white p-3 font-semibold hover:bg-red-700 focus:bg-red-700 transition-colors w-full">
+					Delete
 				</button>
 			</div>
 		</div>
