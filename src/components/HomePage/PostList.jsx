@@ -1,5 +1,6 @@
 import React from "react";
 import { FaRegComment, FaRegThumbsUp } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const PostList = ({ post }) => {
 	return (
@@ -33,6 +34,8 @@ const PostLeft = ({ post }) => {
 };
 
 const PostRight = ({ post }) => {
+	const navigate = useNavigate()
+
 	return (
 		<div>
 			<div>
@@ -40,7 +43,7 @@ const PostRight = ({ post }) => {
 					<strong>Title</strong>: {post.title}
 				</h1>
 				<p>
-					<strong>Content</strong>: {post.content}
+					<strong>Content</strong>: {post.content.length <= 500 ? post.content : post.content.substring(0, 500) + "..."}
 				</p>
 			</div>
 			<div className="flex items-center w-[300px] gap-5 my-3">
@@ -54,10 +57,14 @@ const PostRight = ({ post }) => {
 				</p>
 			</div>
 			<div className="flex flex-col gap-2 w-full text-lg">
-				<button className=" bg-blue-500 p-3 text-white font-semibold hover:bg-blue-600 focus:bg-blue-600 transition-colors w-full">
+				<button className=" bg-blue-500 p-3 text-white font-semibold hover:bg-blue-600 focus:bg-blue-600 transition-colors w-full" onClick={() => {
+					navigate(`/edit/${post._id}`)
+				}}>
 					Edit
 				</button>
-				<button className=" bg-red-600 text-white p-3 font-semibold hover:bg-red-700 focus:bg-red-700 transition-colors w-full">
+				<button className=" bg-red-600 text-white p-3 font-semibold hover:bg-red-700 focus:bg-red-700 transition-colors w-full" onClick={() => {
+					navigate(`/delete/${post._id}`)
+				}}>
 					Delete
 				</button>
 			</div>

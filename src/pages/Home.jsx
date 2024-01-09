@@ -6,9 +6,7 @@ import SearchBox from "../components/HomePage/SearchBox";
 import Select from "../components/HomePage/Select";
 import Unauthorized from "./Unauthorized";
 
-export default function Home({ user }) {
-	const [posts, setPosts] = useState(null);
-	const [loading, setLoading] = useState(false);
+export default function Home({ user, loadingData, posts }) {
 	const [sortType, setSortType] = useState("default");
 	const [searchInput, setSearchInput] = useState("");
 	const [filteredResults, setFilteredResults] = useState([]);
@@ -76,24 +74,7 @@ export default function Home({ user }) {
 
 	}, [posts, sortType, searchInput]);
 
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				setLoading(true);
-				const data = await fetch("http://localhost:8000/api/blog/posts").then(
-					(res) => res.json()
-				);
-				setPosts(data.posts);
-				setLoading(false);
-			} catch (error) {
-				console.log(error);
-				setLoading(false);
-			}
-		};
-		fetchData();
-	}, []);
-
-	if (loading || posts === null) {
+	if (loadingData || posts === null) {
 		return (
 			<div className="flex h-full flex-col justify-center items-center">
 				<h1 className="font-bold font-serif text-xl">
@@ -104,7 +85,7 @@ export default function Home({ user }) {
 		);
 	}
 
-	if (!user.isAdmin) {
+	if (user && user.isAdmin === false || !user) {
 		return <Unauthorized />;
 	}
 

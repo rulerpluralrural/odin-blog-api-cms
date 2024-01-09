@@ -4,6 +4,7 @@ import FormHeader from "../components/CreatePostPage/FormHeader";
 import ImageInput from "../components/CreatePostPage/ImageInput";
 import PublishedOptions from "../components/CreatePostPage/PublishedOptions";
 import TitleInput from "../components/CreatePostPage/TitleInput";
+import FeaturedOptions from "../components/CreatePostPage/FeaturedOptions";
 import Unauthorized from "./Unauthorized";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -33,7 +34,7 @@ const CreatePost = ({ user }) => {
 		}));
 	};
 
-	console.log(formData);
+	// console.log(formData);
 
 	const handleSubmitPost = async (e) => {
 		e.preventDefault();
@@ -83,7 +84,7 @@ const CreatePost = ({ user }) => {
 		);
 	}
 
-	if (user && !user.isAdmin) {
+	if ((user && user.isAdmin === false) || !user) {
 		return <Unauthorized />;
 	}
 
@@ -97,6 +98,7 @@ const CreatePost = ({ user }) => {
 				<TitleInput handleChange={handleChange} />
 				<ContentInput handleChange={handleChange} />
 				<PublishedOptions handlePublish={handlePublish} />
+				<FeaturedOptions />
 				<ImageInput handleChange={handleChange} />
 				<button
 					type="submit"

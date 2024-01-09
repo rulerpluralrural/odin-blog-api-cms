@@ -24,7 +24,7 @@ const Navbar = ({ user, setLoadingSession, setUser, loadingSession }) => {
 		setTimeout(() => {
 			toast.dismiss(notify);
 		}, 5000);
-		navigate("/blog/login");
+		navigate("/login");
 	};
 
 	return (

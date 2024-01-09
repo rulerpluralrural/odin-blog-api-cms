@@ -1,16 +1,20 @@
 import { React, useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Navbar from "./components/Navbar";
+import CreatePost from "./pages/CreatePost";
+import EditPost from "./pages/EditPost";
+import DeletePost from "./pages/DeletePost";
 import { PuffLoader } from "react-spinners";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import CreatePost from "./pages/CreatePost";
 
 const App = () => {
 	const [user, setUser] = useState(null);
 	const [loadingSession, setLoadingSession] = useState(false);
+	const [loadingData, setLoadingData] = useState(false);
+	const [posts, setPosts] = useState(null);
 
 	useEffect(() => {
 		const getSession = async () => {
@@ -24,6 +28,23 @@ const App = () => {
 			setLoadingSession(false);
 		};
 		getSession();
+	}, []);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				setLoadingData(true);
+				const data = await fetch("http://localhost:8000/api/blog/posts").then(
+					(res) => res.json()
+				);
+				setPosts(data.posts);
+				setLoadingData(false);
+			} catch (error) {
+				console.log(error);
+				setLoadingData(false);
+			}
+		};
+		fetchData();
 	}, []);
 
 	return (
@@ -40,10 +61,23 @@ const App = () => {
 				</div>
 			) : (
 				<Routes>
-					<Route path="/" element={<Home user={user} />}></Route>
+					<Route
+						path="/"
+						element={<Navigate to="/posts" replace={true} />}
+					></Route>
+					<Route
+						path="/posts"
+						element={
+							<Home user={user} loadingData={loadingData} posts={posts} />
+						}
+					></Route>
 					<Route path="/login" element={<Login setUser={setUser} />}></Route>
-					<Route path="/create" element={<CreatePost user={user}/>}></Route>
-					<Route />
+					<Route path="/create" element={<CreatePost user={user} />}></Route>
+					<Route
+						path="/edit/:id"
+						element={<EditPost user={user} posts={posts} />}
+					></Route>
+					<Route path="/delete/:id" element={<DeletePost />}></Route>
 				</Routes>
 			)}
 			<ToastContainer
