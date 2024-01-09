@@ -4,7 +4,7 @@ const inputControl = "p-3 border-[1px] border-slate-400 rounded-sm";
 const formControl = "w-full flex flex-col";
 const labelControl = "py-2 font-serif font-bold text-xl";
 
-const TitleInput = ({ post }) => {
+const TitleInput = ({ post, handleChange }) => {
 	return (
 		<div className={formControl}>
 			<label htmlFor="title" className={labelControl}>
@@ -14,9 +14,10 @@ const TitleInput = ({ post }) => {
 				type="text"
 				name="title"
 				id="title"
-				defaultValue={post.title}
+				value={post.title}
 				required
 				className={inputControl}
+				onChange={handleChange}
 			/>
 		</div>
 	);

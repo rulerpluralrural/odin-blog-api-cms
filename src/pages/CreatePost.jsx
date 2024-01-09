@@ -8,7 +8,7 @@ import FeaturedOptions from "../components/CreatePostPage/FeaturedOptions";
 import Unauthorized from "./Unauthorized";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { PuffLoader } from "react-spinners";
+import LoadingPage from "./LoadingPage";
 
 const CreatePost = ({ user }) => {
 	const navigate = useNavigate();
@@ -16,6 +16,7 @@ const CreatePost = ({ user }) => {
 		title: "",
 		content: "",
 		published: false,
+		featured: false,
 		imageURL: "",
 	});
 	const [loading, setLoading] = useState(false);
@@ -31,6 +32,13 @@ const CreatePost = ({ user }) => {
 		setFormData((prevState) => ({
 			...prevState,
 			[e.target.name]: e.target.value === "published",
+		}));
+	};
+
+	const handleFeatured = (e) => {
+		setFormData((prevState) => ({
+			...prevState,
+			[e.target.name]: e.target.value === "featured",
 		}));
 	};
 
@@ -50,7 +58,7 @@ const CreatePost = ({ user }) => {
 				},
 			}).then((res) => res.json());
 			setLoading(false);
-			console.log(data);
+			// console.log(data);
 
 			let notify;
 
@@ -77,11 +85,7 @@ const CreatePost = ({ user }) => {
 	};
 
 	if (loading) {
-		return (
-			<div className="flex flex-col items-center justify-center">
-				<PuffLoader size={125} color="#36d6b0" />
-			</div>
-		);
+		return <LoadingPage />;
 	}
 
 	if ((user && user.isAdmin === false) || !user) {
@@ -98,7 +102,7 @@ const CreatePost = ({ user }) => {
 				<TitleInput handleChange={handleChange} />
 				<ContentInput handleChange={handleChange} />
 				<PublishedOptions handlePublish={handlePublish} />
-				<FeaturedOptions />
+				<FeaturedOptions handleFeatured={handleFeatured}/>
 				<ImageInput handleChange={handleChange} />
 				<button
 					type="submit"
