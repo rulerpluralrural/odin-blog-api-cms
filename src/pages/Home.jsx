@@ -16,7 +16,7 @@ export default function Home({ user, loadingData, posts }) {
 
 		if (searchInput !== "") {
 			const filteredData = posts.filter((item) => {
-				return Object.values(item)
+				return Object.values(item.title)
 					.join("")
 					.toLowerCase()
 					.includes(searchInput.toLocaleLowerCase());
@@ -99,7 +99,7 @@ export default function Home({ user, loadingData, posts }) {
 			<div>
 				<CreateButton />
 			</div>
-			<div className="flex flex-col items-center justify-center flex-1 gap-2 pb-10">
+			<div className="flex flex-col items-center flex-1 gap-2 pb-10">
 				{sortedData.map((post, index) => {
 					return <PostList post={post} key={index} />;
 				})}
