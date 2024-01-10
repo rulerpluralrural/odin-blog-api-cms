@@ -10,8 +10,8 @@ import PublishedOptions from "../components/EditPostPage/PublishedOptions";
 import FeaturedOptions from "../components/EditPostPage/FeaturedOptions";
 import { toast } from "react-toastify";
 
-const EditPost = ({ user }) => {
-  const navigate = useNavigate()
+const EditPost = ({ user, setRefreshKey }) => {
+	const navigate = useNavigate();
 	const [loading, setLoading] = useState(false);
 	const [post, setPost] = useState(null);
 	const { id } = useParams();
@@ -52,6 +52,13 @@ const EditPost = ({ user }) => {
 					`http://localhost:8000/api/blog/posts/${id}`
 				).then((res) => res.json());
 				setPost(data.post);
+				setFormData({
+					title: data.post.title,
+					content: data.post.content,
+					published: data.post.published,
+					featured: data.post.featured,
+					imgURL: data.post.imgURL,
+				});
 				setLoading(false);
 			} catch (error) {
 				console.log(error);
@@ -60,6 +67,7 @@ const EditPost = ({ user }) => {
 		};
 		getPost();
 	}, []);
+	
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -74,11 +82,12 @@ const EditPost = ({ user }) => {
 					["Content-Type"]: "application/json; charset=utf-8",
 				},
 			}).then((res) => res.json());
-      setLoading(false)
+			setLoading(false);
 
 			let notify;
 
 			if (data.post) {
+				setRefreshKey(prevState => prevState + 1)
 				navigate("/");
 				notify = toast.success("Post edited successfully!");
 			} else {
@@ -90,8 +99,6 @@ const EditPost = ({ user }) => {
 					notify = toast.error(data.message);
 				}
 			}
-
-			console.log(data);
 
 			setTimeout(() => {
 				toast.dismiss(notify);

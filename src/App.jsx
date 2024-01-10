@@ -15,25 +15,32 @@ const App = () => {
 	const [loadingSession, setLoadingSession] = useState(false);
 	const [loadingData, setLoadingData] = useState(false);
 	const [posts, setPosts] = useState(null);
+	const [refreshKey, setRefreshKey] = useState(0)
 
 	useEffect(() => {
 		const getSession = async () => {
-			const response = await fetch(
-				"http://localhost:8000/api/blog/auth/session",
-				{
-					credentials: "include",
-				}
-			).then((res) => res.json());
-			setUser(response.user);
-			setLoadingSession(false);
+			setLoadingSession(true);
+			try {
+				const response = await fetch(
+					"http://localhost:8000/api/blog/auth/session",
+					{
+						credentials: "include",
+					}
+				).then((res) => res.json());
+				setUser(response.user);
+				setLoadingSession(false);
+			} catch (error) {
+				console.log(error);
+				setLoadingSession(false);
+			}
 		};
 		getSession();
 	}, []);
 
 	useEffect(() => {
 		const fetchData = async () => {
+			setLoadingData(true);
 			try {
-				setLoadingData(true);
 				const data = await fetch("http://localhost:8000/api/blog/posts").then(
 					(res) => res.json()
 				);
@@ -45,7 +52,7 @@ const App = () => {
 			}
 		};
 		fetchData();
-	}, []);
+	}, [refreshKey]);
 
 	return (
 		<div className="flex flex-col h-screen">
@@ -72,11 +79,8 @@ const App = () => {
 						}
 					></Route>
 					<Route path="/login" element={<Login setUser={setUser} />}></Route>
-					<Route path="/create" element={<CreatePost user={user} />}></Route>
-					<Route
-						path="/edit/:id"
-						element={<EditPost user={user} posts={posts} />}
-					></Route>
+					<Route path="/create" element={<CreatePost user={user} setRefreshKey={setRefreshKey}/>}></Route>
+					<Route path="/edit/:id" element={<EditPost user={user} setRefreshKey={setRefreshKey}/>}></Route>
 					<Route path="/delete/:id" element={<DeletePost />}></Route>
 				</Routes>
 			)}

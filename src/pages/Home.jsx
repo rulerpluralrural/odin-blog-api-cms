@@ -15,7 +15,6 @@ export default function Home({ user, loadingData, posts }) {
 		setSearchInput(searchValue);
 
 		if (searchInput !== "") {
-
 			const filteredData = posts.filter((item) => {
 				return Object.values(item)
 					.join("")
@@ -24,7 +23,6 @@ export default function Home({ user, loadingData, posts }) {
 			});
 
 			setFilteredResults(filteredData);
-
 		} else {
 			setFilteredResults(posts);
 		}
@@ -68,10 +66,13 @@ export default function Home({ user, loadingData, posts }) {
 					return b.comments.length - a.comments.length;
 				});
 				break;
+			case "featured":
+				results = results.filter((item) => {
+					return item.featured === true;
+				});
 		}
 
 		return results;
-
 	}, [posts, sortType, searchInput]);
 
 	if (loadingData || posts === null) {
@@ -85,7 +86,7 @@ export default function Home({ user, loadingData, posts }) {
 		);
 	}
 
-	if (user && user.isAdmin === false || !user) {
+	if ((user && user.isAdmin === false) || !user) {
 		return <Unauthorized />;
 	}
 

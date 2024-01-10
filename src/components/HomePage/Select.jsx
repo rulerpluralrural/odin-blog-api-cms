@@ -16,6 +16,7 @@ const Select = ({ setSortType }) => {
 				<option value="oldest">Oldest</option>
 				<option value="popularity">Most Liked</option>
 				<option value="comments">Most Commented</option>
+				<option value="featured">Featured</option>
 			</select>
 		</div>
 	);

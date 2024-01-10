@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import LoadingPage from "./LoadingPage";
 
-const CreatePost = ({ user }) => {
+const CreatePost = ({ user, setRefreshKey }) => {
 	const navigate = useNavigate();
 	const [formData, setFormData] = useState({
 		title: "",
@@ -63,6 +63,7 @@ const CreatePost = ({ user }) => {
 			let notify;
 
 			if (data.post) {
+				setRefreshKey(prevState => prevState + 1)
 				navigate("/");
 				notify = toast.success("Post created successfully!");
 			} else {

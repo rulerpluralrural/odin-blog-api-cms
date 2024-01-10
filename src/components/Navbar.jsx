@@ -1,7 +1,6 @@
 import {
 	FaBlog,
 	FaSignInAlt,
-	FaUserAlt,
 	FaSignOutAlt,
 	FaUserCircle,
 } from "react-icons/fa";
@@ -45,7 +44,7 @@ const Navlinks = ({ user, logOut, loadingSession }) => {
 		<nav className="px-10 py-8">
 			<div className="flex justify-between items-center gap-10 font-bold text-xl">
 				{loadingSession ? (
-					<PulseLoader className="self-center" color="#36d6b0" />
+					<PulseLoader color="#36d6b0" />
 				) : user ? (
 					<>
 						<button
