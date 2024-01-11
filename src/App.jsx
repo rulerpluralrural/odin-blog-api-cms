@@ -81,7 +81,7 @@ const App = () => {
 					<Route path="/login" element={<Login setUser={setUser} />}></Route>
 					<Route path="/create" element={<CreatePost user={user} setRefreshKey={setRefreshKey}/>}></Route>
 					<Route path="/edit/:id" element={<EditPost user={user} setRefreshKey={setRefreshKey}/>}></Route>
-					<Route path="/delete/:id" element={<DeletePost user={user}/>}></Route>
+					<Route path="/delete/:id" element={<DeletePost user={user} setRefreshKey={setRefreshKey}/>}></Route>
 				</Routes>
 			)}
 			<ToastContainer
