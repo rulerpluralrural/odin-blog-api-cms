@@ -8,6 +8,7 @@ import ContentInput from "../components/EditPostPage/ContentInput";
 import ImageInput from "../components/EditPostPage/ImageInput";
 import PublishedOptions from "../components/EditPostPage/PublishedOptions";
 import FeaturedOptions from "../components/EditPostPage/FeaturedOptions";
+import NotFound from "./NotFound";
 import { toast } from "react-toastify";
 
 const EditPost = ({ user, setRefreshKey }) => {
@@ -67,7 +68,6 @@ const EditPost = ({ user, setRefreshKey }) => {
 		};
 		getPost();
 	}, []);
-	
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -87,7 +87,7 @@ const EditPost = ({ user, setRefreshKey }) => {
 			let notify;
 
 			if (data.post) {
-				setRefreshKey(prevState => prevState + 1)
+				setRefreshKey((prevState) => prevState + 1);
 				navigate("/");
 				notify = toast.success("Post edited successfully!");
 			} else {
@@ -115,6 +115,10 @@ const EditPost = ({ user, setRefreshKey }) => {
 
 	if (loading || post === null) {
 		return <LoadingPage />;
+	}
+
+	if (post === undefined) {
+		return <NotFound />;
 	}
 
 	return (

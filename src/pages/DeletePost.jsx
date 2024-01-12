@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import LoadingPage from "./LoadingPage";
 import Unauthorized from "./Unauthorized";
+import NotFound from "./NotFound";
 import { FaRegComment, FaRegThumbsUp } from "react-icons/fa";
 import { toast } from "react-toastify";
 
@@ -63,6 +64,10 @@ const DeletePost = ({ user, setRefreshKey }) => {
 
 	if ((user && user.isAdmin === false) || !user) {
 		return <Unauthorized />;
+	}
+
+	if (post === undefined) {
+		return <NotFound />;
 	}
 
 	return (
